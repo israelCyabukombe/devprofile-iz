@@ -12,6 +12,27 @@ permissions:
 jobs:
   ci:
     runs-on: ubuntu-latest
+    
+    services:
+      mariadb:
+        image: mariadb:11
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: devprofile
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 3306
+      DB_DATABASE: devprofile
+      DB_USERNAME: root
+      DB_PASSWORD: root
 
     steps:
       - name: Checkout code
