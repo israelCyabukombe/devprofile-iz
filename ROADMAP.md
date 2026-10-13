@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 2 — Navbar with Light / Dark mode (IN PROGRESS, not started). Phase 1 is in a PR for the user to merge. Once it's merged, switch to `home-navbar` and rebase it on `master`.
+> **Resume here:** Phase 3 — Home page, left column (IN PROGRESS, not started). Phase 2 is reviewed and the user is merging `home-navbar`. Once it's on `master`, create `phase-3-home-profile` from `master` and plan Phase 3.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -52,24 +52,29 @@ Branch: `phase-1-database` (from `master`)
 
 ---
 
-## Phase 2: Navbar with Light / Dark mode — `IN PROGRESS`
+## Phase 2: Navbar with Light / Dark mode — `DONE`
 
-Branch: `home-navbar` (already has the Bootstrap navbar markup; rebase on `master` first)
+Branch: `home-navbar` (rebased on `master` after Phase 1)
 
-- [ ] Keep the existing markup in `resources/views/partials/navbar.blade.php` (brand, About, Résumé, Links dropdown)
-- [ ] Replace the 3 theme buttons with **one Light / Dark toggle** (sun / moon icon, `aria-label`)
-- [ ] Put the theme on `<html data-theme="...">` and also set Bootstrap's `data-bs-theme`
-- [ ] Save the choice in `localStorage` (wrapped in try/catch)
-- [ ] Add a small inline script in the layout `<head>` that applies the saved theme before the page paints, so it doesn't flash
-- [ ] Rename the button attribute to `data-theme-toggle`, so it doesn't clash with the `[data-theme]` selector
-- [ ] CSS: keep only `light` and `dark` tokens, and remove the unused `.nav-inner` / `.nav-links` rules
-- [ ] Copy the résumé PDF from `BioWeb/bioweb.client/public/` into `public/`
-- [ ] Pest test: the home page renders the navbar links and the theme toggle
-- [ ] Pause → review → merge
+- [x] Keep the existing markup in `resources/views/partials/navbar.blade.php` (brand, About, Résumé, Links dropdown)
+- [x] Replace the 3 theme buttons with **one Light / Dark toggle** (`<x-theme-toggle />`, inline SVG sun / moon, `aria-label`)
+- [x] Put the theme on `<html data-theme="...">` and also set Bootstrap's `data-bs-theme`
+- [x] Save the choice in `localStorage` (wrapped in try/catch)
+- [x] Inline script in `<head>` (`partials/theme-script.blade.php`) applies the saved theme before the page paints. First visit follows the OS setting.
+- [x] Button attribute is `data-theme-toggle`, so it doesn't clash with the `[data-theme]` selector
+- [x] CSS: only `light` and `dark` tokens (BioWeb's colors), unused `.nav-inner` / `.nav-links` rules removed
+- [x] Copy the résumé PDF from `BioWeb/bioweb.client/public/` into `public/` (link URL-encoded)
+- [x] Pest test: `NavbarTest` covers the links, the PDF, the single toggle and the head script
+- [x] Pause → review → merge
+
+**Notes for later phases:**
+
+- Tailwind and Bootstrap both define a `collapse` class. Tailwind's (`visibility: collapse`) was hiding the navbar links, so `app.css` has `@source not inline('collapse')`. Watch for other Bootstrap/Tailwind class-name clashes (for example `container`, `hidden`, `visible`) when adding markup.
+- The site runs in the Vagrant VM (`http://localhost:8080`), which syncs this folder. For live CSS/JS, run `npm run dev` on Windows. Hard-refresh (Ctrl+Shift+R) if the browser shows an old copy.
 
 ---
 
-## Phase 3: Home page, left column (profile) — `TODO`
+## Phase 3: Home page, left column (profile) — `IN PROGRESS`
 
 Branch: `phase-3-home-profile`
 
