@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 1 — Database (IN PROGRESS, not started). Create branch `phase-1-database` from `master`.
+> **Resume here:** Phase 2 — Navbar with Light / Dark mode (IN PROGRESS, not started). Phase 1 is in a PR for the user to merge. Once it's merged, switch to `home-navbar` and rebase it on `master`.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -18,30 +18,41 @@ Branch: `phase-0-planning`
 
 ---
 
-## Phase 1: Database migrations, models, seeders — `IN PROGRESS`
+## Phase 1: Database migrations, models, seeders — `DONE`
 
 Branch: `phase-1-database` (from `master`)
 
-- [ ] Create models with migrations, factories and seeders (`php artisan make:model -mfs --no-interaction`):
-  - [ ] `personal_infos`: first_name, last_name, email, job_title, summary_text (text), profile_photo_path, resume_path, github_url, linkedin_url
-  - [ ] `educations`: personal_info_id (FK), degree, school, minor (nullable), sort_order
-  - [ ] `skill_levels`: description
-  - [ ] `skills`: personal_info_id (FK), skill_level_id (FK), name, category
-  - [ ] `projects`: title, description (text), live_url (nullable), repo_url (nullable), sort_order, timestamps
-  - [ ] `project_skill` pivot: project_id, skill_id
-- [ ] `App\Enums\SkillCategory` enum (`FrontEnd`, `BackEnd`, `Framework`, `Other`), cast on `Skill`
-- [ ] Relationships:
+- [x] Create models with migrations, factories and seeders (`php artisan make:model -mfs --no-interaction`):
+  - [x] `personal_infos`: first_name, last_name, email, job_title, summary_text (text), profile_photo_path, resume_path, github_url, linkedin_url
+  - [x] `education` (Laravel treats "education" as uncountable): personal_info_id (FK), degree, school, minor (nullable), sort_order
+  - [x] `skill_levels`: description
+  - [x] `skills`: personal_info_id (FK), skill_level_id (FK), name, category
+  - [x] `projects`: title, description (text), live_url (nullable), repo_url (nullable), sort_order, timestamps
+  - [x] `project_skill` pivot: project_id, skill_id
+- [x] `App\Enums\SkillCategory` enum (`FrontEnd`, `BackEnd`, `Framework`, `Other`) with a `label()` for headings, cast on `Skill`
+- [x] Relationships:
   - PersonalInfo hasMany Skill and Education
   - Skill belongsTo PersonalInfo and SkillLevel
   - Project belongsToMany Skill
-- [ ] Seeders use the real content from BioWeb (`SeedPersonalInfo` / `AddProjectAndProjectSkill` migrations, `src/data/Skills.ts`, `src/data/PersonalInfo.ts`)
-- [ ] Pest tests: relationships work, and seeders create the expected rows
-- [ ] `php artisan migrate:fresh --seed` runs cleanly against the MariaDB set in `.env`
-- [ ] Pause → review → merge
+- [x] Seeders use the real content from BioWeb (`src/data/Skills.ts`, `src/data/PersonalInfo.ts`, `About.tsx`, last skills migration)
+- [x] Projects are **placeholders** (`ProjectSeeder`). Replace them with real data before Phase 4.
+- [x] Pest tests: relationships work, and seeders create the expected rows
+- [x] Migrations run cleanly against MariaDB 11.8.6 (run inside the Vagrant VM)
+- [x] Pause → review → merge
+
+**Review checklist (Phase 1):**
+
+- [x] Migrations: the 6 `database/migrations/2026_11_16_*` files (columns, foreign keys, unique project/skill pair)
+- [x] Enum: `app/Enums/SkillCategory.php` (categories and heading labels)
+- [x] Models: `PersonalInfo`, `Education`, `SkillLevel`, `Skill`, `Project` in `app/Models/` (relationships)
+- [x] Seeders: `SkillSeeder` (skill list vs BioWeb) and `ProjectSeeder` (placeholder projects)
+- [x] Tests: `tests/Feature/ProfileModelRelationshipsTest.php` and `tests/Feature/ProfileSeederTest.php`
+- [x] In the VM: `php artisan db:seed` to load the data into MariaDB
+- [x] Full suite: `php artisan test --compact`
 
 ---
 
-## Phase 2: Navbar with Light / Dark mode — `TODO`
+## Phase 2: Navbar with Light / Dark mode — `IN PROGRESS`
 
 Branch: `home-navbar` (already has the Bootstrap navbar markup; rebase on `master` first)
 
