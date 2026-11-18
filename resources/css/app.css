@@ -78,3 +78,71 @@ body {
 [data-theme='dark'] .theme-toggle-icon-moon {
     display: none;
 }
+
+/* Shared */
+
+.icon {
+    width: 1em;
+    height: 1em;
+}
+
+/* Home page: profile sidebar (left column), styled after BioWeb's About.tsx / About.css */
+
+.profile-sidebar {
+    align-self: flex-start;
+}
+
+/* Keep the profile in view while the right column scrolls, below the sticky navbar. */
+@media (min-width: 992px) {
+    .profile-sidebar {
+        position: sticky;
+        top: 75px;
+    }
+}
+
+.profile-photo {
+    width: 200px;
+    height: 240px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.profile-social-link {
+    color: var(--text);
+    font-size: 1.8rem;
+}
+
+.profile-social-link:hover {
+    color: var(--muted);
+}
+
+.profile-section-title {
+    margin-bottom: 0.5rem;
+    color: var(--muted);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.profile-education-item {
+    margin-bottom: 1rem;
+}
+
+.profile-education-item p {
+    margin-bottom: 0.1rem;
+}
+
+.profile-education-degree {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.profile-muted {
+    color: var(--muted);
+    font-size: 0.875rem;
+}
+
+.profile-education-minor {
+    font-size: 0.75rem;
+}

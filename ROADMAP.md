@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 3 — Home page, left column (IN PROGRESS, not started). Phase 2 is reviewed and the user is merging `home-navbar`. Once it's on `master`, create `phase-3-home-profile` from `master` and plan Phase 3.
+> **Resume here:** Phase 4 — Home page, right column (IN PROGRESS, not started). Phase 3 is reviewed and the user is merging `phase-3-home-profile`. Once it's on `master`, create `phase-4-home-content` from `master`. First ask the user for the real project data (or confirm keeping placeholders).
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -71,25 +71,34 @@ Branch: `home-navbar` (rebased on `master` after Phase 1)
 
 - Tailwind and Bootstrap both define a `collapse` class. Tailwind's (`visibility: collapse`) was hiding the navbar links, so `app.css` has `@source not inline('collapse')`. Watch for other Bootstrap/Tailwind class-name clashes (for example `container`, `hidden`, `visible`) when adding markup.
 - The site runs in the Vagrant VM (`http://localhost:8080`), which syncs this folder. For live CSS/JS, run `npm run dev` on Windows. Hard-refresh (Ctrl+Shift+R) if the browser shows an old copy.
+- If the page suddenly has **no styling** (for example the photo fills the whole page), a stopped `npm run dev` left `public/hot` behind, so Laravel loads CSS from a dev server that isn't running. Fix: delete `public/hot` and run `npm run build` (or start `npm run dev` again).
 
 ---
 
-## Phase 3: Home page, left column (profile) — `IN PROGRESS`
+## Phase 3: Home page, left column (profile) — `DONE`
 
 Branch: `phase-3-home-profile`
 
-- [ ] `HomeController@index` replaces `Route::view` (keep the route name `home`) and loads PersonalInfo with its educations
-- [ ] Two-column Bootstrap layout: `col-md-4` sticky sidebar + `col-md-8` content
-- [ ] Left column: round profile photo (copy `IMG_0002.jpg` to `public/images/`), name, job title, GitHub / LinkedIn icons, Education
-- [ ] Partial: `resources/views/home/partials/profile-sidebar.blade.php`
-- [ ] Pest test: the page shows the seeded name, job title and education
-- [ ] Pause → review → merge
+- [x] `HomeController@index` replaces `Route::view` (keep the route name `home`) and loads PersonalInfo with its education
+- [x] Two-column Bootstrap layout: `col-md-4` sticky sidebar + `col-md-8` content (empty until Phase 4)
+- [x] Left column: round profile photo (copied `IMG_0002.jpg` to `public/images/`), name, job title, GitHub / LinkedIn icons (`<x-icons.github />`, `<x-icons.linkedin />`), Education
+- [x] Partial: `resources/views/home/partials/profile-sidebar.blade.php`; page view is `home/index.blade.php` (old `welcome.blade.php` removed)
+- [x] "Profile coming soon" message when the database isn't seeded yet
+- [x] Pest test: `HomePageProfileTest` covers the seeded profile, photo, social links, hidden empty fields, education order and the empty state
+- [x] Pause → review → merge
+
+**Notes from Phase 3:**
+
+- Tests now compile Blade views into `storage/framework/testing/views` (`VIEW_COMPILED_PATH` in `phpunit.xml`). Before that, running tests on Windows wrote compiled views into the shared folder, and the VM's web server failed with `touch(): Utime failed` (HTTP 500). If that error comes back, run `php artisan view:clear`.
+- `public/images/IMG_0002.jpg` is 7.2 MB (copied as-is from BioWeb). Resize/compress it in Phase 5 polish.
 
 ---
 
-## Phase 4: Home page, right column (intro, skills, projects) — `TODO`
+## Phase 4: Home page, right column (intro, skills, projects) — `IN PROGRESS`
 
 Branch: `phase-4-home-content`
+
+- [ ] Before building: replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills)
 
 - [ ] Intro: job title and summary text
 - [ ] Skills grouped by `SkillCategory` (grouping done in the controller), rendered with a reusable `skill-badge` component
