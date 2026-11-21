@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 4 — Home page, right column (IN PROGRESS, not started). Phase 3 is reviewed and the user is merging `phase-3-home-profile`. Once it's on `master`, create `phase-4-home-content` from `master`. First ask the user for the real project data (or confirm keeping placeholders).
+> **Resume here:** Phase 4 — Home page, right column (IN PROGRESS). Built on branch `phase-4-home-content` (uncommitted) with placeholder projects, all 30 tests pass, and the live page on port 8080 shows intro, skills and projects. Waiting for the user's review → then commit and merge.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -98,14 +98,18 @@ Branch: `phase-3-home-profile`
 
 Branch: `phase-4-home-content`
 
-- [ ] Before building: replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills)
-
-- [ ] Intro: job title and summary text
-- [ ] Skills grouped by `SkillCategory` (grouping done in the controller), rendered with a reusable `skill-badge` component
-- [ ] Projects ordered by `sort_order`, using a `project-card` component with repo / live links and a Bootstrap collapse "Tech Stack" showing the project's skills
-- [ ] Empty state when there are no projects (no spinner or retry needed, because the page is rendered on the server)
-- [ ] Pest tests: skills appear under the right category, and projects appear in order with their skills
+- [ ] Replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills). **Deferred: user chose placeholders for now.**
+- [x] Intro: job title and summary text (`home/partials/intro.blade.php`)
+- [x] Skills grouped by `SkillCategory` in `HomeController::groupSkillsByCategory()` (enum order, empty categories left out), rendered with `<x-skill-badge />` (`home/partials/skills.blade.php`)
+- [x] Projects ordered by `sort_order` (ascending; BioWeb sorted descending), using `<x-project-card />` with repo / live links (`<x-icons.github />`, `<x-icons.globe />`) and a Bootstrap collapse "Tech Stack" (`home/partials/projects.blade.php`)
+- [x] Empty state: "No projects yet." (no spinner or retry needed, because the page is rendered on the server)
+- [x] Pest tests: `HomePageContentTest` covers intro, skills under the right category in order, empty categories hidden, projects in order with their tech stack, links shown/hidden, and the empty state
 - [ ] Pause → review → merge
+
+**Notes from Phase 4:**
+
+- `PersonalInfo::skills()` now orders by `id`, so skills show in the order the seeder lists them.
+- The VM `touch(): Utime failed` 500 error came back. Cause: Laravel calls `touch()` when a `.blade.php` file has a newer timestamp than its compiled copy but the same content, which happens after `git checkout` / `git pull` / merges rewrite files. The VM's web server can't set timestamps on the synced folder. Quick fix: `php artisan view:clear`. Permanent fix (Lamp-project, later): mount the synced folder as the web server user, or point `VIEW_COMPILED_PATH` at a folder outside the synced folder in the VM's web server config.
 
 ---
 

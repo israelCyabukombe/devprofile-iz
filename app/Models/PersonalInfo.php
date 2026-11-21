@@ -50,11 +50,13 @@ class PersonalInfo extends Model
     }
 
     /**
+     * Skills in the order they were added, which is the order the seeder lists them.
+     *
      * @return HasMany<Skill, $this>
      */
     public function skills(): HasMany
     {
-        return $this->hasMany(Skill::class);
+        return $this->hasMany(Skill::class)->orderBy('id');
     }
 
     /**
