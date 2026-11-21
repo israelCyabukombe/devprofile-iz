@@ -11,7 +11,9 @@
                 </div>
 
                 <div class="col-lg-8 col-md-8 ps-lg-4">
-                    {{-- Phase 4: intro, skills and projects --}}
+                    @include('home.partials.intro', ['personalInfo' => $personalInfo])
+                    @include('home.partials.skills', ['skillGroups' => $skillGroups])
+                    @include('home.partials.projects', ['projects' => $projects])
                 </div>
             </div>
         @else
