@@ -51,6 +51,7 @@ class SkillSeeder extends Seeder
             ['name' => 'C++', 'level' => 'Intermediate', 'category' => SkillCategory::BackEnd],
             ['name' => 'MySQL', 'level' => 'Intermediate', 'category' => SkillCategory::BackEnd],
             ['name' => 'MariaDB', 'level' => 'Intermediate', 'category' => SkillCategory::BackEnd],
+            ['name' => 'MSSQL', 'level' => 'Intermediate', 'category' => SkillCategory::BackEnd],
 
             ['name' => 'React.js', 'level' => 'Beginner', 'category' => SkillCategory::Framework],
             ['name' => 'Laminas', 'level' => 'Beginner', 'category' => SkillCategory::Framework],

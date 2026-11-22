@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 5 — Polish (IN PROGRESS, not started). Phases 0–4 are merged into `master`. Create a branch from `master` for the next Phase 5 item (start with the photo and the real projects).
+> **Resume here:** Phase 5 — Polish (IN PROGRESS). Real projects are built on branch `phase-5-real-projects` (uncommitted), all 34 tests pass, and the VM database is seeded. Waiting for the user's review → then commit and merge. Next suggested item: the permanent fix for the VM `touch()` error.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -121,11 +121,12 @@ One branch per item (or small group of items), each with pause → review → me
 
 **Follow-ups from earlier phases:**
 
-- [ ] Replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills)
-- [ ] Resize / compress `public/images/IMG_0002.jpg` (7.2 MB)
+- [x] Replace the placeholder projects in `ProjectSeeder` with the real ones: DocSearch, QualityTracking, My Bio Web (copied from the live site; branch `phase-5-real-projects`). Added MSSQL (Back End, Intermediate) to `SkillSeeder`. The seeder deletes old placeholder rows and stops with an error on an unknown skill name.
 - [ ] Decide project order: lowest `sort_order` first (current) or highest first (BioWeb)
 - [ ] Decide the gap between skill badges: `0.75rem` (current) or BioWeb's `3rem`
 - [ ] Permanent fix for the VM `touch(): Utime failed` error (Lamp-project: mount the synced folder as the web server user, or move `VIEW_COMPILED_PATH` outside the synced folder in the VM)
+- [ ] Make the VM database reachable from Windows: Windows has its own MySQL 8.0 (`MySQL80` service) on port 3306, so forward the VM's MariaDB to another port (e.g. `guest: 3306, host: 33060`) and run `DB_PORT=33060 php artisan ...` on Windows. Needs MariaDB to accept connections from the host (Salt change). Until then, run database commands inside the VM.
+- [ ] Resize / compress `public/images/IMG_0002.jpg` (7.2 MB). Low priority until deployment.
 
 **Original polish items:**
 
@@ -133,3 +134,4 @@ One branch per item (or small group of items), each with pause → review → me
 - [ ] Contact page
 - [ ] SEO meta tags
 - [ ] Deployment
+  - Note: BioWeb hard-coded its skills in `src/data/Skills.ts` because its Azure SQL database had slow cold starts (the "Database cold start detected…" messages in `About.tsx`). This site renders on the server, so a sleeping database would delay the whole page. Use a database that doesn't sleep, or cache the home page data with Laravel's cache (`Cache::remember`). Keep the database as the single source of truth (no hard-coded copy like `Skills.ts`).
