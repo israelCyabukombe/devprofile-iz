@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 5 — Polish (IN PROGRESS). Real projects are built on branch `phase-5-real-projects` (uncommitted), all 34 tests pass, and the VM database is seeded. Waiting for the user's review → then commit and merge. Next suggested item: the permanent fix for the VM `touch()` error.
+> **Resume here:** Phase 5 — Polish (IN PROGRESS). Real projects and the VM `touch()` fix are done. Next: pick a remaining Phase 5 item (quick ones: decide project order and the skill badge gap; then responsive polish). One branch per item from `master`.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -89,7 +89,7 @@ Branch: `phase-3-home-profile`
 
 **Notes from Phase 3:**
 
-- Tests now compile Blade views into `storage/framework/testing/views` (`VIEW_COMPILED_PATH` in `phpunit.xml`). Before that, running tests on Windows wrote compiled views into the shared folder, and the VM's web server failed with `touch(): Utime failed` (HTTP 500). If that error comes back, run `php artisan view:clear`.
+- Tests now compile Blade views into `storage/framework/testing/views` (`VIEW_COMPILED_PATH` in `phpunit.xml`). Before that, running tests on Windows wrote compiled views into the shared folder, and the VM's web server failed with `touch(): Utime failed` (HTTP 500). Fixed for good in Phase 5 (Apache now compiles views outside the synced folder).
 - `public/images/IMG_0002.jpg` is 7.2 MB (copied as-is from BioWeb). Resize/compress it in Phase 5 polish.
 
 ---
@@ -111,7 +111,7 @@ Branch: `phase-4-home-content`
 - `PersonalInfo::skills()` now orders by `id`, so skills show in the order the seeder lists them.
 - `HomeController::findSkillsInCategory()` uses a plain `foreach` instead of `filter(function ...)`, for readability.
 - The Tech Stack button has a layers icon (`<x-icons.layers />`); only the arrow (`.icon-chevron`) flips when the stack opens.
-- The VM `touch(): Utime failed` 500 error came back. Cause: Laravel calls `touch()` when a `.blade.php` file has a newer timestamp than its compiled copy but the same content, which happens after `git checkout` / `git pull` / merges rewrite files. The VM's web server can't set timestamps on the synced folder. Quick fix: `php artisan view:clear`. Permanent fix (Lamp-project, later): mount the synced folder as the web server user, or point `VIEW_COMPILED_PATH` at a folder outside the synced folder in the VM's web server config.
+- The VM `touch(): Utime failed` 500 error came back. Cause: Laravel calls `touch()` when a `.blade.php` file has a newer timestamp than its compiled copy but the same content, which happens after `git checkout` / `git pull` / merges rewrite files. The VM's web server can't set timestamps on the synced folder. Fixed in Phase 5: Apache now compiles views into `/var/cache/devprofile-Iz/views` on the VM's own disk (see Phase 5).
 
 ---
 
@@ -124,7 +124,7 @@ One branch per item (or small group of items), each with pause → review → me
 - [x] Replace the placeholder projects in `ProjectSeeder` with the real ones: DocSearch, QualityTracking, My Bio Web (copied from the live site; branch `phase-5-real-projects`). Added MSSQL (Back End, Intermediate) to `SkillSeeder`. The seeder deletes old placeholder rows and stops with an error on an unknown skill name.
 - [ ] Decide project order: lowest `sort_order` first (current) or highest first (BioWeb)
 - [ ] Decide the gap between skill badges: `0.75rem` (current) or BioWeb's `3rem`
-- [ ] Permanent fix for the VM `touch(): Utime failed` error (Lamp-project: mount the synced folder as the web server user, or move `VIEW_COMPILED_PATH` outside the synced folder in the VM)
+- [x] Permanent fix for the VM `touch(): Utime failed` error. Done Nov 22 in Lamp-project (commit `24328cf`): Apache's compiled views now live in `/var/cache/devprofile-Iz/views` on the VM's own disk, owned by `www-data` (Salt state `devprofile-view-cache` + `SetEnv VIEW_COMPILED_PATH` in the Apache site config). Verified: touching a Blade file no longer causes a 500.
 - [ ] Make the VM database reachable from Windows: Windows has its own MySQL 8.0 (`MySQL80` service) on port 3306, so forward the VM's MariaDB to another port (e.g. `guest: 3306, host: 33060`) and run `DB_PORT=33060 php artisan ...` on Windows. Needs MariaDB to accept connections from the host (Salt change). Until then, run database commands inside the VM.
 - [ ] Resize / compress `public/images/IMG_0002.jpg` (7.2 MB). Low priority until deployment.
 
