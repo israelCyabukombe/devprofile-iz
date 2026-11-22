@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 4 — Home page, right column (IN PROGRESS). Built on branch `phase-4-home-content` (uncommitted) with placeholder projects, all 30 tests pass, and the live page on port 8080 shows intro, skills and projects. Waiting for the user's review → then commit and merge.
+> **Resume here:** Phase 5 — Polish (IN PROGRESS, not started). Phases 0–4 are merged into `master`. Create a branch from `master` for the next Phase 5 item (start with the photo and the real projects).
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -94,26 +94,40 @@ Branch: `phase-3-home-profile`
 
 ---
 
-## Phase 4: Home page, right column (intro, skills, projects) — `IN PROGRESS`
+## Phase 4: Home page, right column (intro, skills, projects) — `DONE`
 
 Branch: `phase-4-home-content`
 
-- [ ] Replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills). **Deferred: user chose placeholders for now.**
+- [ ] Replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills). **Deferred to Phase 5.**
 - [x] Intro: job title and summary text (`home/partials/intro.blade.php`)
 - [x] Skills grouped by `SkillCategory` in `HomeController::groupSkillsByCategory()` (enum order, empty categories left out), rendered with `<x-skill-badge />` (`home/partials/skills.blade.php`)
 - [x] Projects ordered by `sort_order` (ascending; BioWeb sorted descending), using `<x-project-card />` with repo / live links (`<x-icons.github />`, `<x-icons.globe />`) and a Bootstrap collapse "Tech Stack" (`home/partials/projects.blade.php`)
 - [x] Empty state: "No projects yet." (no spinner or retry needed, because the page is rendered on the server)
 - [x] Pest tests: `HomePageContentTest` covers intro, skills under the right category in order, empty categories hidden, projects in order with their tech stack, links shown/hidden, and the empty state
-- [ ] Pause → review → merge
+- [x] Pause → review → merge
 
 **Notes from Phase 4:**
 
 - `PersonalInfo::skills()` now orders by `id`, so skills show in the order the seeder lists them.
+- `HomeController::findSkillsInCategory()` uses a plain `foreach` instead of `filter(function ...)`, for readability.
+- The Tech Stack button has a layers icon (`<x-icons.layers />`); only the arrow (`.icon-chevron`) flips when the stack opens.
 - The VM `touch(): Utime failed` 500 error came back. Cause: Laravel calls `touch()` when a `.blade.php` file has a newer timestamp than its compiled copy but the same content, which happens after `git checkout` / `git pull` / merges rewrite files. The VM's web server can't set timestamps on the synced folder. Quick fix: `php artisan view:clear`. Permanent fix (Lamp-project, later): mount the synced folder as the web server user, or point `VIEW_COMPILED_PATH` at a folder outside the synced folder in the VM's web server config.
 
 ---
 
-## Phase 5: Polish (optional, later) — `TODO`
+## Phase 5: Polish — `IN PROGRESS`
+
+One branch per item (or small group of items), each with pause → review → merge.
+
+**Follow-ups from earlier phases:**
+
+- [ ] Replace the placeholder projects in `ProjectSeeder` with real data from the user (title, description, live URL, repo URL, sort order, skills)
+- [ ] Resize / compress `public/images/IMG_0002.jpg` (7.2 MB)
+- [ ] Decide project order: lowest `sort_order` first (current) or highest first (BioWeb)
+- [ ] Decide the gap between skill badges: `0.75rem` (current) or BioWeb's `3rem`
+- [ ] Permanent fix for the VM `touch(): Utime failed` error (Lamp-project: mount the synced folder as the web server user, or move `VIEW_COMPILED_PATH` outside the synced folder in the VM)
+
+**Original polish items:**
 
 - [ ] Responsive polish
 - [ ] Contact page
