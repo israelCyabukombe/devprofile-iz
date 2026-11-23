@@ -1,6 +1,10 @@
 @extends('layouts.app')
 
-@section('title', 'Iz-Bio')
+@section('title', $seo['title'])
+
+@section('meta')
+    <x-seo-meta :seo="$seo" />
+@endsection
 
 @section('content')
     <div class="container-fluid">
