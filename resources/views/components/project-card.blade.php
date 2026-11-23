@@ -4,7 +4,7 @@
 --}}
 @props(['project'])
 
-<article class="project-card p-4 mb-4">
+<article class="project-card p-3 p-sm-4 mb-4">
     <h5 class="fw-bold mb-2">{{ $project->title }}</h5>
     <p class="mb-3">{{ $project->description }}</p>
 

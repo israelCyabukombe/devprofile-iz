@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 5 — Polish (IN PROGRESS). SEO meta tags and photo compression are done (branch `phase-5-seo-and-photo`). Next: pick the next open Phase 5 item with the user (responsive polish, contact page, VM database port forward, or deployment), on a new branch from an up-to-date `master`.
+> **Resume here:** Phase 5 — Polish (IN PROGRESS). Responsive polish is done (branch `phase-5-responsive`). Next: pick the next open Phase 5 item with the user (contact page, VM database port forward, or deployment), on a new branch from an up-to-date `master`.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -130,7 +130,9 @@ One branch per item (or small group of items), each with pause → review → me
 
 **Original polish items:**
 
-- [ ] Responsive polish
+- [x] Responsive polish (branch `phase-5-responsive`): columns sit side by side only from 992px (`col-lg-*`), so tablets get the stacked layout and the sidebar is sticky whenever there are two columns. The page uses `container` (lines up with the navbar). The right column shares one `max-width: 720px` (`.home-content`). On phones: badge gap `0.75rem` (`1.5rem` from 576px), card padding `p-3 p-sm-4`, and the intro's job title is hidden while stacked (the sidebar shows it). Card hover lift only on `@media (hover: hover)`. Tested in `ResponsiveLayoutTest`.
+  - Tip: check widths with headless Edge by loading the page in an `<iframe>` of the target width. Headless Edge has a minimum window width, so `--window-size=375,...` alone gives a wrong, cropped phone view.
+  - Not changed: at 1024px the name wraps onto two lines in the sidebar (reads fine).
 - [ ] Contact page
 - [x] SEO meta tags (branch `phase-5-seo-and-photo`): title is "Name — Job title", plus meta description (summary cut to 160 characters), canonical URL, Open Graph + Twitter card, and JSON-LD `Person`. `HomeController::buildSeoTags()` prepares the values, `<x-seo-meta>` prints them, the layout has an `@yield('meta')` slot. Tested in `SeoMetaTest`.
   - Note for deployment: set `APP_URL` to the real domain. After going live, check link previews with LinkedIn's Post Inspector and the JSON-LD with Google's Rich Results Test (neither works on `localhost`).
