@@ -5,6 +5,8 @@
             class="profile-photo"
             src="{{ asset($personalInfo->profile_photo_path) }}"
             alt="Portrait of {{ $personalInfo->fullName() }}"
+            width="200"
+            height="240"
         >
     @endif
 
