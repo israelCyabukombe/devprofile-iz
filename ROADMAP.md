@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 5 — Polish (IN PROGRESS). Project order and badge gap are done (branch `phase-5-order-and-gap`). Next: pick the next open Phase 5 item with the user (VM database port forward, photo compression, or the original polish items), on a new branch from an up-to-date `master`.
+> **Resume here:** Phase 5 — Polish (IN PROGRESS). SEO meta tags and photo compression are done (branch `phase-5-seo-and-photo`). Next: pick the next open Phase 5 item with the user (responsive polish, contact page, VM database port forward, or deployment), on a new branch from an up-to-date `master`.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -126,12 +126,13 @@ One branch per item (or small group of items), each with pause → review → me
 - [x] Skill badge gap: `.skill-badges` gap is now `1.5rem` (was `0.75rem`) in `resources/css/app.css`.
 - [x] Permanent fix for the VM `touch(): Utime failed` error. Done Nov 22 in Lamp-project (commit `24328cf`): Apache's compiled views now live in `/var/cache/devprofile-Iz/views` on the VM's own disk, owned by `www-data` (Salt state `devprofile-view-cache` + `SetEnv VIEW_COMPILED_PATH` in the Apache site config). Verified: touching a Blade file no longer causes a 500.
 - [ ] Make the VM database reachable from Windows: Windows has its own MySQL 8.0 (`MySQL80` service) on port 3306, so forward the VM's MariaDB to another port (e.g. `guest: 3306, host: 33060`) and run `DB_PORT=33060 php artisan ...` on Windows. Needs MariaDB to accept connections from the host (Salt change). Until then, run database commands inside the VM.
-- [ ] Resize / compress `public/images/IMG_0002.jpg` (7.2 MB). Low priority until deployment.
+- [x] Resize / compress `public/images/IMG_0002.jpg`: now 600×900, 89 KB (was 3168×4752, 7.2 MB), resized with PowerShell's built-in .NET image library at JPEG quality 82. The `<img>` has `width`/`height` so the layout doesn't jump (branch `phase-5-seo-and-photo`).
 
 **Original polish items:**
 
 - [ ] Responsive polish
 - [ ] Contact page
-- [ ] SEO meta tags
+- [x] SEO meta tags (branch `phase-5-seo-and-photo`): title is "Name — Job title", plus meta description (summary cut to 160 characters), canonical URL, Open Graph + Twitter card, and JSON-LD `Person`. `HomeController::buildSeoTags()` prepares the values, `<x-seo-meta>` prints them, the layout has an `@yield('meta')` slot. Tested in `SeoMetaTest`.
+  - Note for deployment: set `APP_URL` to the real domain. After going live, check link previews with LinkedIn's Post Inspector and the JSON-LD with Google's Rich Results Test (neither works on `localhost`).
 - [ ] Deployment
   - Note: BioWeb hard-coded its skills in `src/data/Skills.ts` because its Azure SQL database had slow cold starts (the "Database cold start detected…" messages in `About.tsx`). This site renders on the server, so a sleeping database would delay the whole page. Use a database that doesn't sleep, or cache the home page data with Laravel's cache (`Cache::remember`). Keep the database as the single source of truth (no hard-coded copy like `Skills.ts`).
