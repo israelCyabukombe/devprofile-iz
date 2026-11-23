@@ -46,7 +46,7 @@ test('seeds every skill in its category', function () {
 });
 
 test('seeds the real projects in order', function () {
-    $titlesInOrder = Project::orderBy('sort_order')->pluck('title')->all();
+    $titlesInOrder = Project::orderByDesc('sort_order')->pluck('title')->all();
 
     expect($titlesInOrder)->toBe(['DocSearch', 'QualityTracking', 'My Bio Web']);
 });

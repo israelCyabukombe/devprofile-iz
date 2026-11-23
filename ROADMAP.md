@@ -1,6 +1,6 @@
 # Career Page Roadmap
 
-> **Resume here:** Phase 5 — Polish (IN PROGRESS). Real projects and the VM `touch()` fix are done. Next: pick a remaining Phase 5 item (quick ones: decide project order and the skill badge gap; then responsive polish). One branch per item from `master`.
+> **Resume here:** Phase 5 — Polish (IN PROGRESS). Project order and badge gap are done (branch `phase-5-order-and-gap`). Next: pick the next open Phase 5 item with the user (VM database port forward, photo compression, or the original polish items), on a new branch from an up-to-date `master`.
 
 **Status legend:** `TODO` · `IN PROGRESS` · `DONE`
 
@@ -122,8 +122,8 @@ One branch per item (or small group of items), each with pause → review → me
 **Follow-ups from earlier phases:**
 
 - [x] Replace the placeholder projects in `ProjectSeeder` with the real ones: DocSearch, QualityTracking, My Bio Web (copied from the live site; branch `phase-5-real-projects`). Added MSSQL (Back End, Intermediate) to `SkillSeeder`. The seeder deletes old placeholder rows and stops with an error on an unknown skill name.
-- [ ] Decide project order: lowest `sort_order` first (current) or highest first (BioWeb)
-- [ ] Decide the gap between skill badges: `0.75rem` (current) or BioWeb's `3rem`
+- [x] Project order: highest `sort_order` first (like BioWeb). `HomeController::findProjects()` uses `orderByDesc('sort_order')`. `ProjectSeeder` renumbered DocSearch 3, QualityTracking 2, My Bio Web 1, so the live site's order stays the same. After pulling, re-seed with `php artisan db:seed --class=ProjectSeeder` (branch `phase-5-order-and-gap`).
+- [x] Skill badge gap: `.skill-badges` gap is now `1.5rem` (was `0.75rem`) in `resources/css/app.css`.
 - [x] Permanent fix for the VM `touch(): Utime failed` error. Done Nov 22 in Lamp-project (commit `24328cf`): Apache's compiled views now live in `/var/cache/devprofile-Iz/views` on the VM's own disk, owned by `www-data` (Salt state `devprofile-view-cache` + `SetEnv VIEW_COMPILED_PATH` in the Apache site config). Verified: touching a Blade file no longer causes a 500.
 - [ ] Make the VM database reachable from Windows: Windows has its own MySQL 8.0 (`MySQL80` service) on port 3306, so forward the VM's MariaDB to another port (e.g. `guest: 3306, host: 33060`) and run `DB_PORT=33060 php artisan ...` on Windows. Needs MariaDB to accept connections from the host (Salt change). Until then, run database commands inside the VM.
 - [ ] Resize / compress `public/images/IMG_0002.jpg` (7.2 MB). Low priority until deployment.
