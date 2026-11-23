@@ -87,7 +87,7 @@ class HomeController extends Controller
     }
 
     /**
-     * All projects with their tech stack, in the order set by sort_order.
+     * All projects with their tech stack, highest sort_order first.
      *
      * @return Collection<int, Project>
      */
@@ -95,7 +95,7 @@ class HomeController extends Controller
     {
         return Project::query()
             ->with('skills')
-            ->orderBy('sort_order')
+            ->orderByDesc('sort_order')
             ->get();
     }
 }

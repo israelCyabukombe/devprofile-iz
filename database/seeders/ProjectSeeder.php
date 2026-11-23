@@ -70,7 +70,13 @@ class ProjectSeeder extends Seeder
             );
         }
 
-        return $skillIdsByName->values()->all();
+        $skillIds = [];
+
+        foreach ($skillIdsByName as $skillId) {
+            $skillIds[] = (int) $skillId;
+        }
+
+        return $skillIds;
     }
 
     /**
@@ -87,7 +93,7 @@ class ProjectSeeder extends Seeder
                     .'viewing, downloading and more.',
                 'live_url' => null,
                 'repo_url' => null,
-                'sort_order' => 1,
+                'sort_order' => 3,
                 'skill_names' => [
                     'C#', 'PHP', 'SQL', 'HTML', 'CSS', 'Javascript', 'RabbitMQ',
                     'Laminas', '.Net', 'MySQL', 'MariaDB', 'Azure',
@@ -115,7 +121,7 @@ class ProjectSeeder extends Seeder
                     .'resource and support for implementation',
                 'live_url' => 'https://www.icyabu.com/',
                 'repo_url' => 'https://github.com/israelCyabukombe/BioWeb',
-                'sort_order' => 3,
+                'sort_order' => 1,
                 'skill_names' => ['C#', 'React.js', 'CSS', 'TypeScript', '.Net', 'Azure', 'MSSQL'],
             ],
         ];

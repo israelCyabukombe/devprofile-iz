@@ -46,10 +46,10 @@ test('categories without skills are left out', function () {
         ->assertDontSee('Other Tools');
 });
 
-test('projects appear in sort order with their tech stack', function () {
+test('projects appear highest sort order first with their tech stack', function () {
     PersonalInfo::factory()->create();
-    $secondProject = Project::factory()->create(['title' => 'Second Project', 'sort_order' => 2]);
-    $firstProject = Project::factory()->create(['title' => 'First Project', 'sort_order' => 1]);
+    $secondProject = Project::factory()->create(['title' => 'Second Project', 'sort_order' => 1]);
+    $firstProject = Project::factory()->create(['title' => 'First Project', 'sort_order' => 2]);
     $firstProject->skills()->attach(Skill::factory()->create(['name' => 'StackSkill']));
 
     $response = $this->get(route('home'));
